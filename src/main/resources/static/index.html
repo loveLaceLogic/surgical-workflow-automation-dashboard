@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Surgical Operations Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #1f2937;
+        }
+
+        .disclaimer {
+            background: #fff3cd;
+            padding: 12px;
+            border-left: 5px solid #ffc107;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-section {
+            margin-bottom: 40px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .cards {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 180px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .card p {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0 0;
+        }
+
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 20px
+        }
+        .field {
+            display: flex;
+            flex-direction: column;
+        }   
+        .field label {
+            font-size: 13px;
+            font-weight: bold;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        .field input,
+        .field select {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button[type="submit"] {
+            background: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+        }
+
+        table {
+            width: 100%;
+            table-layout: auto;
+            background: white;
+            border-collapse: collapse;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+
+        th, td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #e5e7eb;
+            text-align: left;
+            vertical-align: top;
+        }
+        .nowrap {
+            white-space: nowrap;
+        }
+        .long-text {
+            white-space: normal;
+            min-width: 220px;
+            max-width: 300px;
+            line-height: 1.4;
+        }
+
+        th {
+            background: #111827;
+            color: white;
+        }
+
+        .badge {
+            padding: 5px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .completed {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .delayed {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .urgent {
+            background: #ffedd5;
+            color: #9a3412;
+        }
+
+        .recovery {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .ready {
+            background: #e0f2fe;
+            color: #075985;
+        }
+        .or-schedule {
+            font-size: 13px;
+            line-height: 1.5;
+        
+        }
+        .or-board,
+        .workload-board {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+        .or-available {
+            background: #f8fafc;
+        }
+
+        .or-occupied {
+            background: #fff7ed;
+        }
+
+        .or-ready {
+            background: #ecfdf5;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Surgical Operations Dashboard</h1>
+
+<div class="disclaimer">
+    Synthetic educational healthcare workflow project. Not for clinical use.
+</div>
+
+<div class="dashboard-section">
+    <h2>Executive Summary</h2>
+    <div class="cards">
+        <div class="card"><h3>Total Cases</h3><p id="totalCases">0</p></div>
+        <div class="card"><h3>Pending Labs</h3><p id="pendingLabs">0</p></div>
+        <div class="card"><h3>Insurance Holds</h3><p id="insuranceHolds">0</p></div>
+        <div class="card"><h3>Patients in PACU</h3><p id="pacuPatients">0</p></div>
+        <div class="card"><h3>STAT Cases</h3><p id="statCases">0</p></div>
+        <div class="card"><h3>Ready For Surgery</h3><p id="readyCases">0</p></div>
+    </div>
+</div>
+<div class="dashboard-section">
+    <h2>Daily Schedule Summary</h2>
+
+    <div class="cards">
+        <div class="card"><h3>Cases Scheduled</h3><p id="scheduledCases">0</p></div>
+        <div class="card"><h3>Ready Cases</h3><p id="dailyReadyCases">0</p></div>
+        <div class="card"><h3>Pending Requirements</h3><p id="pendingRequirements">0</p></div>
+        <div class="card"><h3>OR Minutes</h3><p id="orMinutes">0</p></div>
+        <div class="card"><h3>Average Case</h3><p id="averageCaseLength">0</p></div>
+    </div>
+</div>
+<h2>Operating Room Schedule</h2>
+
+<div class="workload-board">
+
+    <div class="card or-card">
+        <h3>OR 1</h3>
+        <p id="or1Schedule">Available</p>
+    </div>
+
+    <div class="card or-card">
+        <h3>OR 2</h3>
+        <p id="or2Schedule">Available</p>
+    </div>
+
+    <div class="card or-card">
+        <h3>OR 3</h3>
+        <p id="or3Schedule">Available</p>
+    </div>
+
+    <div class="card or-card">
+        <h3>OR 4</h3>
+        <p id="or4Schedule">Available</p>
+    </div>
+
+    <div class="card or-card">
+        <h3>OR 5</h3>
+        <p id="or5Schedule">Available</p>
+    </div>
+
+</div>
+
+<div class="dashboard-section">
+    <h2>Patient Flow Board</h2>
+    <div class="cards">
+        <div class="card"><h3>PRE-OP</h3><p id="preOpCount">0</p></div>
+        <div class="card"><h3>IN OR</h3><p id="inOrCount">0</p></div>
+        <div class="card"><h3>PACU</h3><p id="pacuCount">0</p></div>
+        <div class="card"><h3>DISCHARGED</h3><p id="dischargedCount">0</p></div>
+    </div>
+</div>
+<div class="dashboard-section">
+    <h2>Case Status Distribution</h2>
+
+    <div class="cards">
+        <div class="card"><h3>Scheduled</h3><p id="scheduledStatus">0</p></div>
+        <div class="card"><h3>In Surgery</h3><p id="inSurgeryStatus">0</p></div>
+        <div class="card"><h3>PACU</h3><p id="pacuStatus">0</p></div>
+        <div class="card"><h3>Discharged</h3><p id="dischargedStatus">0</p></div>
+        <div class="card"><h3>Cancelled</h3><p id="cancelledStatus">0</p></div>
+    </div>
+</div>
+<div class="dashboard-section">
+    <h2>Surgeon Workload</h2>
+    <div class="cards">
+        <div class="card"><h3>Dr. Smith</h3><p id="smithCases">0</p></div>
+        <div class="card"><h3>Dr. Johnson</h3><p id="johnsonCases">0</p></div>
+        <div class="card"><h3>Dr. Patel</h3><p id="patelCases">0</p></div>
+        <div class="card"><h3>Dr. Nguyen</h3><p id="nguyenCases">0</p></div>
+        <div class="card"><h3>Dr. Carter</h3><p id="carterCases">0</p></div>
+    </div>
+</div>
+
+<h2>Add Surgical Case</h2>
+
+<form id="caseForm">
+    <div class="form-grid">
+        <div class="field">
+            <label>Patient Name</label>
+            <input type="text"
+                   id="patientName"
+                   placeholder="Enter Patient Name"
+        required>
+    </div>
+
+    <div class="field">
+        <label>Procedure</label>
+        <select id="procedureName">
+            <option>Cystoscopy</option>
+            <option>TURP</option>
+            <option>Ureteroscopy</option>
+            <option>Hernia Repair</option>
+            <option>Tonsillectomy</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Surgeon</label>
+        <select id="surgeonName">
+            <option>Dr. Smith</option>
+            <option>Dr. Johnson</option>
+            <option>Dr. Patel</option>
+        <option>Dr. Nguyen</option>
+        <option>Dr. Carter</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Surgery Date</label>
+        <input type="date" id="surgeryDate">
+    </div>
+
+    <div class="field">
+        <label>Lab Status</label>
+        <select id="labStatus">
+            <option>ORDERED</option>
+            <option>COLLECTED</option>
+            <option>IN LAB</option>
+            <option>RESULTED</option>
+        <option>CANCELLED</option>
+        </select>
+    </div>
+    <div class="field">
+        <label>Insurance Status</label>
+        <select id="insuranceStatus">
+            <option>PENDING</option>
+            <option>VERIFIED</option>
+            <option>DENIED</option>
+            <option>APPROVED</option>
+        </select>
+    </div>
+    <div class="field">
+        <label>Case Status</label>
+        <select id="surgicalStatus">
+            <option>SCHEDULED</option>
+            <option>PRE-OP COMPLETE</option>
+            <option>IN SURGERY</option>
+            <option>PACU</option>
+            <option>DISCHARGED</option>
+            <option>CANCELLED</option>
+        </select>
+    </div>
+    <div class="field">
+        <label>Patient Location</label>
+        <select id="patientLocation">
+            <option>PREOP</option>
+            <option>IN OR</option>
+            <option>PACU</option>
+            <option>DISCHARGED</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Priority</label>
+        <select id="priority">
+            <option>NORMAL</option>
+            <option>HIGH</option>
+            <option>STAT</option>
+        </select>
+    </div>
+
+    <div class="field">
+        <label>Recovery Scenario</label>
+        <select id="postOpScenario">
+            <option>Normal Recovery</option>
+            <option>Stent Placed</option>
+            <option>Catheter Placed</option>
+            <option>Bleeding Risk</option>
+            <option>Follow-up Required</option>
+        </select>
+    </div>
+    <div class="field">
+        <label>Notes</label>
+        <input type="text" 
+                id="notes" 
+            placeholder="Notes">
+    </div>
+    </div>
+    <button type="submit">Add Surgical Case</button>
+</form>
+
+<h2>Case List</h2>
+
+<input type="text" id="searchInput" placeholder="Search patient, surgeon, procedure, or status">
+
+<table>
+    <thead>
+    <tr>
+        <th>Patient</th>
+        <th>Procedure</th>
+        <th>OR Room</th>
+        <th>Duration</th>
+        <th>Surgeon</th>
+        <th>Status</th>
+        <th>Location</th>
+        <th>Outcome</th>
+        <th>Readiness</th>
+        <th>Reason</th>
+        <th class="long-text">Follow-Up</th>
+        <th class="long-text">Availability</th>
+        <th class="long-text">Discharge Instructions</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody id="ordersTable"></tbody>
+</table>
+
+<script>
+    const API_URL = "http://localhost:8082/orders";
+
+    function badgeClass(outcome) {
+        if (!outcome) return "ready";
+        if (outcome.includes("COMPLETED")) return "completed";
+        if (outcome.includes("DELAYED")) return "delayed";
+        if (outcome.includes("URGENT")) return "urgent";
+        if (outcome.includes("RECOVERY")) return "recovery";
+        return "ready";
+    }
+
+    async function loadOrders() {
+        const response = await fetch(API_URL);
+        const orders = await response.json();
+
+        document.getElementById("totalCases").textContent = orders.length;
+        document.getElementById("pendingLabs").textContent =
+            orders.filter(o => o.labStatus !== "RESULTED").length;
+        document.getElementById("insuranceHolds").textContent =
+            orders.filter(o => o.insuranceStatus === "DENIED" || o.insuranceStatus === "PENDING").length;
+        document.getElementById("pacuPatients").textContent =
+            orders.filter(o => o.surgicalStatus === "PACU").length;
+        document.getElementById("statCases").textContent =
+            orders.filter(o => o.priority === "STAT").length;
+        document.getElementById("readyCases").textContent =
+            orders.filter(o => o.surgeryReady === true).length;
+        const scheduledCases = orders.filter(o => o.surgicalStatus !== "CANCELLED");
+
+        document.getElementById("scheduledCases").textContent =
+            scheduledCases.length;
+
+        document.getElementById("dailyReadyCases").textContent =
+            orders.filter(o => o.surgeryReady === true).length;
+
+        document.getElementById("pendingRequirements").textContent =
+            orders.filter(o => o.surgeryReady !== true).length;
+
+        const totalMinutes = orders.reduce((sum, order) => {
+            return sum + (order.estimatedDurationMinutes || 0);
+        }, 0);
+
+        document.getElementById("orMinutes").textContent =
+            totalMinutes + " min";
+
+        document.getElementById("averageCaseLength").textContent =
+            orders.length > 0
+                ? Math.round(totalMinutes / orders.length) + " min"
+                : "0 min"; 
+        document.getElementById("preOpCount").textContent =
+            orders.filter(o => o.patientLocation === "PREOP").length;
+        document.getElementById("inOrCount").textContent =
+            orders.filter(o => o.patientLocation === "IN OR").length;
+        document.getElementById("pacuCount").textContent =
+            orders.filter(o => o.patientLocation === "PACU").length;
+        document.getElementById("dischargedCount").textContent =
+            orders.filter(o => o.patientLocation === "DISCHARGED").length;
+
+        document.getElementById("smithCases").textContent =
+            orders.filter(o => o.surgeonName === "Dr. Smith").length;
+        document.getElementById("johnsonCases").textContent =
+            orders.filter(o => o.surgeonName === "Dr. Johnson").length;
+        document.getElementById("patelCases").textContent =
+            orders.filter(o => o.surgeonName === "Dr. Patel").length;
+        document.getElementById("nguyenCases").textContent =
+            orders.filter(o => o.surgeonName === "Dr. Nguyen").length;
+        document.getElementById("carterCases").textContent =
+            orders.filter(o => o.surgeonName === "Dr. Carter").length;
+
+        document.getElementById("scheduledStatus").textContent =
+            orders.filter(o => o.surgicalStatus === "SCHEDULED").length;
+
+        document.getElementById("inSurgeryStatus").textContent =
+            orders.filter(o => o.surgicalStatus === "IN SURGERY").length;
+
+        document.getElementById("pacuStatus").textContent =
+            orders.filter(o => o.surgicalStatus === "PACU").length;
+
+        document.getElementById("dischargedStatus").textContent =
+            orders.filter(o => o.surgicalStatus === "DISCHARGED").length;
+
+        document.getElementById("cancelledStatus").textContent =
+            orders.filter(o => o.surgicalStatus === "CANCELLED").length;
+
+        updateOperatingRoomBoard(orders);   
+        const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+
+        const filteredOrders = orders.filter(order =>
+            (order.patientName || "").toLowerCase().includes(searchTerm) ||
+            (order.procedureName || "").toLowerCase().includes(searchTerm) ||
+            (order.surgeonName || "").toLowerCase().includes(searchTerm) ||
+            (order.surgicalStatus || "").toLowerCase().includes(searchTerm) ||
+            (order.patientLocation || "").toLowerCase().includes(searchTerm) ||
+            (order.outcome || "").toLowerCase().includes(searchTerm)
+        );
+
+        const table = document.getElementById("ordersTable");
+        table.innerHTML = "";
+
+        filteredOrders.forEach(order => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+                <td class="nowrap">${order.patientName || ""}</td>
+                <td>${order.procedureName || ""}</td>
+                <td class="nowrap">${order.operatingRoom || ""}</td>
+                <td class="nowrap">${order.estimatedDurationMinutes ? order.estimatedDurationMinutes + " min" : ""}</td>
+                <td class="nowrap">${order.surgeonName || ""}</td>
+                <td>${order.surgicalStatus || ""}</td>
+                <td>${order.patientLocation || ""}</td>
+                <td><span class="badge ${badgeClass(order.outcome || "")}">${order.outcome || ""}</span></td>
+                <td>${order.surgeryReady ? '<span class="badge completed">READY</span>' : '<span class="badge delayed">HOLD</span>'}</td>
+                <td>${order.readinessReason || ""}</td>
+                <td class="long-text">${order.followUpTimeframe || ""}</td>
+                <td class="long-text">${order.followUpAvailability || ""}</td>
+                <td class="long-text">${order.dischargeInstructions || ""}</td>
+                <td>
+                    <button onclick="movePatient(${order.id}, 'IN OR')">Move To OR</button>
+
+                    <button onclick="movePatient(${order.id}, 'PACU')">Move To PACU</button>
+
+                    <button onclick="movePatient(${order.id}, 'DISCHARGED')">Discharge</button>
+
+                    <button class="delete-btn"
+                            onclick="deleteOrder(${order.id})">
+                        Delete
+                    </button>
+                </td>
+            `;
+
+            table.appendChild(row);
+        });
+    }
+    function updateOperatingRoomBoard(orders) {
+        ["or1Schedule", "or2Schedule", "or3Schedule", "or4Schedule", "or5Schedule"].forEach(id => {
+            const card = document.getElementById(id);
+
+            card.innerHTML = "Available";
+
+            card.parentElement.classList.remove(
+            "or-available",
+            "or-occupied",
+            "or-ready"
+        );
+
+        card.parentElement.classList.add("or-available");
+    });
+
+    orders.forEach(order => {
+        if (!order.operatingRoom) {
+            return;
+        }
+
+        const roomId = order.operatingRoom.replace(" ", "").toLowerCase();
+        const scheduleCard = document.getElementById(roomId + "Schedule");
+
+        if (scheduleCard) {
+            scheduleCard.parentElement.classList.remove(
+                "or-available",
+                "or-occupied",
+                "or-ready"
+            );
+
+            if (order.surgeryReady) {
+                scheduleCard.parentElement.classList.add("or-ready");
+            } else {
+                scheduleCard.parentElement.classList.add("or-occupied");
+            }
+
+            scheduleCard.innerHTML = `
+                <div class="or-schedule">
+                    <strong>${order.patientName || ""}</strong><br>
+                    Procedure: ${order.procedureName || ""}<br>
+                    Surgeon: ${order.surgeonName || ""}<br>
+                    Duration: ${order.estimatedDurationMinutes || ""} min<br>
+                    Status: ${order.surgicalStatus || ""}
+                </div>
+            `;
+        }
+    });
+}
+       
+                
+
+    document.getElementById("caseForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const newOrder = {
+            patientName: document.getElementById("patientName").value,
+            procedureName: document.getElementById("procedureName").value,
+            surgeonName: document.getElementById("surgeonName").value,
+            surgeryDate: document.getElementById("surgeryDate").value,
+            labStatus: document.getElementById("labStatus").value,
+            insuranceStatus: document.getElementById("insuranceStatus").value,
+            surgicalStatus: document.getElementById("surgicalStatus").value,
+            patientLocation: document.getElementById("patientLocation").value,
+            priority: document.getElementById("priority").value,
+            postOpScenario: document.getElementById("postOpScenario").value,
+            notes: document.getElementById("notes").value
+        };
+
+        await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newOrder)
+        });
+
+        document.getElementById("caseForm").reset();
+        loadOrders();
+    });
+        async function deleteOrder(id) {
+            await fetch(`${API_URL}/${id}`, {
+                method: "DELETE"
+    });
+
+    loadOrders();
+}
+
+        async function movePatient(id, newLocation) {
+            const response = await fetch(API_URL);
+            const orders = await response.json();
+
+            const order = orders.find(o => o.id === id);
+
+            if (!order) {
+                return;
+    }
+
+            order.patientLocation = newLocation;
+
+            if (newLocation === "IN OR") {
+                order.surgicalStatus = "IN SURGERY";
+    }
+
+            if (newLocation === "PACU") {
+                order.surgicalStatus = "PACU";
+    }
+
+            if (newLocation === "DISCHARGED") {
+                order.surgicalStatus = "DISCHARGED";
+    }
+
+            await fetch(`${API_URL}/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(order)
+    });
+
+    loadOrders();
+}
+
+document.getElementById("searchInput").addEventListener("input", loadOrders);
+
+loadOrders();
+    
+</script>
+
+</body>
+</html>
