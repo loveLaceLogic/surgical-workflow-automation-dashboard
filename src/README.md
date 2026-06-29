@@ -1,37 +1,89 @@
-# Surgical Workflow Automation Dashboard
+![Java](https://img.shields.io/badge/Java-17-orange)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-Backend-green)
+![Healthcare](https://img.shields.io/badge/Healthcare-Operations-blue)
+![Dashboard](https://img.shields.io/badge/Dashboard-Analytics-purple)
+![HTML](https://img.shields.io/badge/HTML-Frontend-red)
+![JavaScript](https://img.shields.io/badge/JavaScript-Interactive-yellow)
+![Conda](https://img.shields.io/badge/Conda-Environment-success)
 
-A Spring Boot and JavaScript healthcare operations dashboard designed to simulate surgical scheduling, readiness tracking, operating room utilization, follow-up planning, and discharge instruction automation.
+# 🏥 Surgical Workflow Automation Dashboard
+
+Spring Boot healthcare operations dashboard that simulates surgical workflow automation, operating room scheduling, patient readiness tracking, surgeon workload management, follow-up planning, and discharge instruction management using synthetic healthcare data.
 
 > Educational healthcare workflow project using synthetic data. Not intended for clinical use.
 
 ---
 
-## Project Overview
+## ⭐ Project Highlights
 
-This project was inspired by operational workflows observed in a high-volume ambulatory surgery center.
+* 🏥 Simulates end-to-end ambulatory surgery center workflows using synthetic healthcare data
+* ⚙️ Built with Java and Spring Boot
+* 📊 Executive dashboard for surgical operations analytics
+* 🩺 Tracks patients through PRE-OP, IN OR, PACU, and DISCHARGED
+* 🏥 Visualizes operating room scheduling and surgeon workload
+* 📋 Generates follow-up recommendations and discharge instructions
+* 🔄 Supports complete surgical case lifecycle management
+* 📦 Supports both Maven and Conda development environments
 
-In many surgical environments, staff must manually track:
+---
 
-* Patient readiness for surgery
-* Lab and insurance requirements
+## 🚀 Project Overview
+
+This project simulates the operational workflows commonly performed within an ambulatory surgery center.
+
+The dashboard centralizes surgical scheduling, operating room utilization, patient readiness tracking, surgeon workload management, follow-up planning, and discharge instruction generation into a single operational interface.
+
+Although built using synthetic data for educational purposes, the workflow design was inspired by real-world healthcare operations to demonstrate how software engineering can improve clinical coordination, workflow visibility, and operational efficiency.
+
+---
+
+## 💡 Real-World Inspiration
+
+This project was inspired by operational workflows observed while working in an ambulatory surgery center.
+
+Daily responsibilities often required coordinating:
+
+* Patient readiness
+* Insurance verification
+* Laboratory requirements
 * Operating room assignments
-* Surgeon schedules
-* Follow-up planning
+* Surgeon availability
+* Procedure scheduling
+* Follow-up appointments
 * Procedure-specific discharge instructions
 
-This dashboard centralizes those workflows into a single operational view.
+This dashboard demonstrates how workflow automation and centralized dashboards can improve communication while reducing manual coordination across surgical teams.
 
 ---
 
-## Real-World Inspiration
+## 🏗️ System Architecture
 
-While working in a surgical center environment, discharge instructions and follow-up scheduling were often managed manually. Staff needed to remember surgeon-specific preferences, recovery workflows, and scheduling requirements across multiple providers and procedures.
+```mermaid
+flowchart TD
 
-This project simulates how workflow automation and dashboard analytics could improve operational visibility and reduce manual coordination.
+A["Synthetic Surgical Case Data"]
+    --> B["Spring Boot Backend"]
+
+B --> C["Workflow Engine"]
+
+C --> D["Executive Dashboard"]
+
+C --> E["Operating Room Schedule"]
+
+C --> F["Patient Flow Tracking"]
+
+C --> G["Surgeon Workload Dashboard"]
+
+G --> H["Case Management"]
+
+H --> I["Follow-up Planning"]
+
+I --> J["Discharge Instructions"]
+```
 
 ---
 
-## Features
+## 🏥 Dashboard Features
 
 ### Executive Summary
 
@@ -52,10 +104,10 @@ This project simulates how workflow automation and dashboard analytics could imp
 
 ### Operating Room Schedule
 
-* OR assignment engine
+* Operating room assignment engine
 * Procedure duration tracking
 * Surgeon assignment visibility
-* OR availability monitoring
+* Operating room availability monitoring
 
 ### Patient Flow Tracking
 
@@ -82,20 +134,21 @@ This project simulates how workflow automation and dashboard analytics could imp
 
 ### Case Management
 
-* Create cases
+* Create surgical cases
 * Search cases
 * Update workflow status
 * Delete cases
 
 ---
 
-## Technology Stack
+## ⚙️ Technology Stack
 
 ### Backend
 
 * Java
 * Spring Boot
 * Spring Data JPA
+* REST API
 * Maven
 
 ### Frontend
@@ -108,21 +161,42 @@ This project simulates how workflow automation and dashboard analytics could imp
 
 * H2 Database
 
+### Development
+
+* Git
+* GitHub
+* VS Code
+* Conda
+
 ---
-## Screenshots
+
+## 🔧 Key Features
+
+* Executive surgical operations dashboard
+* Operating room scheduling
+* Patient readiness tracking
+* Workflow status management
+* Surgeon workload visualization
+* Case lifecycle management
+* Follow-up recommendation generation
+* Procedure-specific discharge instructions
+* Search, update, and delete case management
+
+---
+
+## 📸 Dashboard Screenshots
 
 ### Executive Summary Dashboard
 
-Provides a high-level overview of surgical operations including readiness, pending requirements, insurance holds, PACU volume, and case counts.
+Provides a real-time overview of surgical operations including readiness, pending requirements, insurance holds, PACU volume, and daily case metrics.
 
 ![Executive Summary](screenshots/executive-summary.png)
-
 
 ---
 
 ### Operating Room Schedule
 
-Displays operating room assignments, procedure information, surgeon assignments, and OR availability.
+Displays operating room assignments, procedure information, surgeon assignments, and operating room availability.
 
 ![Operating Room Schedule](screenshots/or-schedule.png)
 
@@ -146,33 +220,47 @@ Provides visibility into surgeon case assignments and workload distribution.
 
 ### Case Management List
 
-Centralized view of all surgical cases including operating room assignment, duration, readiness status, follow-up recommendations, surgeon availability, and discharge instructions.
+Centralized view of all surgical cases including operating room assignment, procedure duration, readiness status, follow-up recommendations, surgeon availability, and discharge instructions.
 
 ![Case List](screenshots/case-list.png)
 
 ---
 
-## How To Run
+## 🚀 Environment Setup
 
-Clone the repository:
+### Prerequisites
+
+* Java 17
+* Maven
+* Python 3.11
+* Conda (Miniconda or Anaconda)
+
+### Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Surgical-Workflow-Automation-Dashboard.git
+git clone https://github.com/loveLaceLogic/surgical-workflow-automation-dashboard.git
+cd surgical-workflow-automation-dashboard
 ```
 
-Navigate to the project:
+### Create the Conda environment
 
 ```bash
-cd Surgical-Workflow-Automation-Dashboard
+conda env create -f environment.yml
 ```
 
-Start the application:
+### Activate the Conda environment
+
+```bash
+conda activate surgical-dashboard
+```
+
+### Run the Spring Boot application
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-Open:
+### Open the application
 
 ```text
 http://localhost:8082
@@ -180,34 +268,22 @@ http://localhost:8082
 
 ---
 
-## Project Architecture
+## 🚀 Future Improvements
 
-```text
-Frontend (HTML/CSS/JavaScript)
-            │
-            ▼
-Spring Boot REST API
-            │
-            ▼
-Business Logic Layer
-            │
-            ▼
-H2 Database
-```
+* Role-based authentication
+* PostgreSQL integration
+* Docker deployment
+* GitHub Actions CI/CD
+* Real-time operating room updates
+* HL7 message simulation
+* FHIR interoperability exploration
+* Interactive analytics dashboards
+* Predictive surgical scheduling using machine learning
 
 ---
 
-## Future Enhancements
+## ⚠️ Disclaimer
 
-* Authentication and role-based access
-* PDF discharge packet generation
-* Procedure analytics dashboard
-* Calendar integration
-* Real-time notifications
-* Multi-facility support
+This project uses **synthetic educational healthcare workflow data** and is intended solely for software engineering demonstration and educational purposes.
 
----
-
-## Disclaimer
-
-This project uses synthetic educational healthcare workflow data and is not intended for clinical decision making or patient care.
+It is **not intended for clinical decision-making, patient care, or use in production healthcare environments.**
